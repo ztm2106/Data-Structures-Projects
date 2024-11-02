@@ -1,0 +1,149 @@
+Binary Search Beginning
+floor(log2 * n) + 1 (runtime for binary search)
+
+    Binary Seach Worksheet
+        element not found when high and low invert when searching then go to below work
+            -low -1 = -10 for return when not found (neg number used for element not found)
+            -(-10) - 1 = 9 for when the value not found should go (index =  -10)
+                  *******   (- in the beginnging of two sentences above means actual neeg not dash) **********
+
+
+                  low + ((high - low) /2 ) Stops over flow of bit and memory usage
+
+
+Recursion
+    Base case : solution is directly given
+        - push a stack frame on the call stack
+        - keeping making recursive call until base case
+        - after reaching base case pop the stach frames off the call stack and apply the
+         return value to the pending operation in the previous function call
+
+
+         n! =  n x (n-1) x (n-2) ...
+
+         Stack (stack space like memory)
+         5 * fatorial(4)
+         - recursive call then pending operation
+         4 * fatorial(3)
+         - push stack frame
+         .
+         .
+         .
+         factorial(0)
+         = 1
+         -then pop
+         -replace function call with return value
+         - pop all the way back up
+         .
+         .
+         .
+         120
+         - Final return value
+                    - grows downward toward base case but final answer is not known until each
+                      stack frame is popped and the return value applied where the recursive call is made
+            ******* (This is called linear recursion) ********
+
+
+         code
+         public static int factorial(n) {
+            if (n == 0) {
+            return 1:
+            }
+            return (n * factorial(n-1)):
+         }
+
+         recursion practice in class
+         452 = n 0 = r
+         45 = n 2 = r
+         4 = n 254 = r
+         0 = n 254 = r
+
+          - reverse the starting number called tail recursion (theres no pending operation)
+          - without pending operation and using operations on the parameters ( no reason to work backwards) (whenever possible use tail recursion)
+
+
+          Fibonacci Numbers
+            - start with 0, 1
+            -   sequence are computed as the sum of the two previous numbers
+
+            when a another pending operation is a recursion then we get a tree recursion (shown in Fib)
+
+                 - 2^n nodes of the tree (run time)
+
+
+// Runtime Analysis
+--  Theta == cant break out of program early
+-- Big O == if can break out of program early
+
+
+Sept 25 Lecture
+- interface hold a set of methods that can be inheritted providing an abstract type
+           - An interface is similar to a class, but the body of an interface can include only abstract methods and final fields (constants).
+           - A class implements an interface by providing code for each method declared by the interface.
+                        -   java.util for the list interface
+                                - ArrayList --> grows by itself when add index to it
+                                - usually starts out at size 10
+                                - cannot have an array list if primitives
+            - Types in Java are divided into two categories—primitive types and reference types. The primitive types are boolean , byte , char , short , int , long , float and double .
+               All other types are reference types, so classes, which specify the types of objects, are reference types.
+               Need wrapper classes to store primitives
+
+Sept 27 Lecture
+    - What is a LinkedList?
+        A Linked List is a linear data structure that dynamically stores elements. The elements that make up linked lists are called nodes.
+
+    - Iterator<String> iter = strings.iterator();
+          while (iter.hasNext()) {
+              System.out.println(iter.next());
+        ***** prints the value and advances the list
+
+    - notation (E) can be used instead of specifying the char, int, double ... etc
+
+    - floyds cycle detection algorithm
+        set 2 pointers
+         * Initialize two-pointers and start traversing the linked list.
+         * Move the slow pointer by one position.
+         * Move the fast pointer by two positions.
+         * If both pointers meet at some point then a loop exists and if the fast pointer meets the end position then no loop exists.
+
+October 2
+    - Stacks is a linear data structure where elements are inserted or deleted from one side of the list
+        - top of the stacked is the element that can be pushed or popped
+
+October 9
+    - in Myarraylist = Objects is the java type
+
+October 11
+- leaves have zero children
+- internal nodes have 1 or more
+- sum of leave + internal nodes = total nodes
+- Path from n 1 to n k : the sequence of nodes
+  n 1, n 2, ..., n k, such that n i is the parent of n i+1 for 1≤i<k.
+- Length of a path: k‐1 = number of edges on the path
+- Depth of n k: the length of the path from root to n k
+- Height of tree T: the length of the longest path from root
+  to a leaf in terms of edges
+- root has an empty address and for other nodes address of the i‐th child of node with address n is n.i
+
+    Storage compleet binary tress:
+    _ need left child of A ( can use to get other indexes when using array list)
+        expression: (2 * i) + 1
+        - traverasl
+            - pre  toot comes first | root left right |  draw the tree and follow the 1
+            - in  root comes second | left root right |  draw the tree and follow the 2
+            - post root comes last  | left right root |  draw the tree and follow the 3
+
+- a null node has height of -1 (used for base cases)
+- width for the tree == the number of nodes in the tree that have no children
+- number of leaves =  (n + 1) / 2   n = number of internal nodes
+
+- diameter of tree is the longest points between left and right  count edges or nodes??
+
+                        public static int countNodes(){
+                        if n = null{
+                        return 0;
+                        }
+                        return 1 + countNode(n+1) + countNode(n+1)
+                        }
+
+                        might not be right!!!!!!!!!

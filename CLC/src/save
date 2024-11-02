@@ -1,0 +1,154 @@
+//    /**
+//     * Removes the object at the top of this stack and returns that object.
+//     * @return the object at the top of this stack (the last item in the
+//     * MyArrayList).
+//     * @throws StackException if the stack is empty. The exception's message
+//     * must be "Attempt to pop from empty stack."
+//     */
+//    public E pop() throws StackException {
+//        MyArrayList<E> List = new MyArrayList<>();
+//        if (size() == -1){
+//            throw new StackException("Attempt to pop from empty stack.");
+//        }
+//            E popValue = remove(size -1);
+//            size--;
+//        return get(size() -1);
+//    }
+//
+//    /**
+//     * Looks at the object at the top of this stack without removing it from the
+//     * stack.
+//     * @return the object at the top of this stack (the last item in the
+//     * MyArrayList).
+//     * @throws StackException if the stack is empty. The exception's message
+//     * must be "Attempt to peek at empty stack."
+//     */
+//    public E peek() throws StackException{
+//        if (size() == -1){
+//            throw new StackException("Attempt to pop from empty stack.");
+//        }
+//        return get(size()-1);
+//    }
+
+
+
+
+
+??????????????????????????????????????????????/
+
+
+/**
+     * Converts the infix expression stored in the instance variable
+     * 'infixExpression' into postfix, storing the result in instance variable
+     * 'postfixExpression'. Each symbol in the postfix expression is
+     * separated by a space.
+     * @return a string containing the postfix expression
+     * @throws StackException if an error occurs when calling a method on the
+     * stack. This should not happen. The throws clause is there so that you
+     * don't need any try-catch blocks in the body of this method.
+     */
+    public String infixToPostfix() throws StackException {
+        // TODO
+        MyStack<Character> operatorStack = new MyStack();
+        StringBuilder postfixExpression = new StringBuilder();
+
+        for (int i = 0; i < infixExpression.length(); i++) {
+            char c = infixExpression.charAt(i);
+
+            if (Character.isLetterOrDigit(c)) {
+                // Handle multi-character integers or variables
+                StringBuilder operand = new StringBuilder();
+                while (i < infixExpression.length() && (Character.isLetterOrDigit(infixExpression.charAt(i) || infixExpression.charAt(i) == '.'))) {
+                    operand.append(infixExpression.charAt(i));
+                    i++;
+                }
+                postfixExpression.append(operand.toString()).append(" ");
+                i--; // Move back one position after parsing the operand
+            } else if (c == '(') {
+                operatorStack.push(c);
+            } else if (c == ')') {
+                while (!operatorStack.isEmpty() && operatorStack.peek() != '(') {
+                    postfixExpression.append(operatorStack.pop()).append(" ");
+                }
+                if (!operatorStack.isEmpty() && operatorStack.peek() == '(') {
+                    operatorStack.pop();
+                }
+            } else if (c == '^' || c == '*' || c == '/' || c == '+' || c == '-') {
+                while (!operatorStack.isEmpty() && (c != '^' && precedence(c) <= precedence(operatorStack.peek()))) {
+                    postfixExpression.append(operatorStack.pop()).append(" ");
+                }
+                operatorStack.push(c);
+            }
+        }
+        this.postfixExpression = String.valueOf(postfixExpression);
+        return this.postfixExpression;
+    }
+
+    /**
+     * Evaluates the postfix expression and returns the integer value of the
+     * expression. All operations are performed with integers.
+     * @return the integer value that results after evaluating the postfix
+     * expression
+     * @throws StackException if an error occurs when calling a method on the
+     * stack. This should not happen. The throws clause is there so that you
+     * don't need any try-catch blocks in the body of this method.
+     * @throws IllegalArgumentException if an attempt to divide or mod by zero
+     * is encountered. The message of the exception reads:
+     * "Cannot evaluate expression, division by zero."
+     * An IllegalArgumentException si also thrown if the user attempts to
+     * compute 0^0. The message of the exception reads:
+     * "Cannot evaluate expression, 0^0 is undefined."
+     */
+    public int evaluatePostfix()
+            throws StackException, IllegalArgumentException {
+        // TODO
+        MyStack<Integer> stack = new MyStack();
+        String postfixExpression = this.postfixExpression;
+        String[] tokens = postfixExpression.split(" ");
+
+        for (String token : tokens) {
+            if (token.matches("\\d+")) {
+                // Operand: Push onto the stack
+                stack.push(Integer.parseInt(token));
+            } else if (token.equals("~")) {
+                // Unary operator (~): Pop, negate, and push back
+                if (stack.isEmpty()) {
+                    throw new StackException("Invalid expression");
+                }
+                int operand = stack.pop();
+                stack.push(-operand);
+            } else if (token.matches("[+\\-*/]")) {
+                // Binary operator (+, -, *, /): Pop two, perform the operation, and push the result
+                if (stack.size() < 2) {
+                    throw new StackException("Invalid expression");
+                }
+                int operand2 = stack.pop();
+                int operand1 = stack.pop();
+                if (token.equals("+")) {
+                    stack.push(operand1 + operand2);
+                } else if (token.equals("-")) {
+                    stack.push(operand1 - operand2);
+                } else if (token.equals("*")) {
+                    stack.push(operand1 * operand2);
+                } else if (token.equals("/")) {
+                    if (operand2 == 0) {
+                        throw new IllegalArgumentException("Cannot evaluate expression, division by zero.");
+                    }
+                    stack.push(operand1 / operand2);
+                }
+            } else {
+                throw new IllegalArgumentException("Invalid token: " + token);
+            }
+        }
+
+        if (stack.size() != 1) {
+            throw new StackException("Invalid expression");
+        }
+
+        int result = stack.pop();
+        if (result == 0 && postfixExpression.contains("0^0")) {
+            throw new IllegalArgumentException("Cannot evaluate expression, 0^0 is undefined.");
+        }
+
+        return result;
+    }
